@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#07111f">
+    <title>ESP32 BLE Firmware Uploader</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header>
+        <p class="eyebrow">ESP32-C3 · BLE OTA</p>
+        <h1>Firmware uploader</h1>
+        <p class="intro">
+          Chọn file <code>firmware.bin</code> trên điện thoại và truyền trực tiếp
+          tới <code>esp32-lin-logger</code>. File không được tải lên Internet.
+        </p>
+      </header>
+
+      <section class="panel status-grid" aria-label="Trạng thái">
+        <div>
+          <span>Bluetooth</span>
+          <strong id="bluetoothStatus" data-state="idle">Chưa kết nối</strong>
+        </div>
+        <div>
+          <span>Firmware</span>
+          <strong id="fileStatus" data-state="idle">Chưa chọn file</strong>
+        </div>
+        <div>
+          <span>Upload</span>
+          <strong id="uploadStatus" data-state="idle">Sẵn sàng</strong>
+        </div>
+      </section>
+
+      <section class="panel controls" aria-label="Điều khiển upload">
+        <button id="connectButton" class="primary" type="button">
+          1 — Kết nối ESP32
+        </button>
+
+        <label class="file-picker" for="firmwareInput">
+          <span>2 — Chọn firmware.bin</span>
+          <small id="fileDetails">Chỉ dùng file được build cho board này</small>
+        </label>
+        <input id="firmwareInput" type="file" accept=".bin,application/octet-stream">
+
+        <button id="uploadButton" class="primary" type="button" disabled>
+          3 — Upload firmware
+        </button>
+        <button id="abortButton" class="danger" type="button" disabled>
+          Hủy upload
+        </button>
+
+        <div class="progress-wrap">
+          <div class="progress-label">
+            <span id="progressText">0%</span>
+            <span id="byteProgress">0 / 0 bytes</span>
+          </div>
+          <progress id="progressBar" value="0" max="100">0%</progress>
+        </div>
+      </section>
+
+      <section class="warning" aria-label="Lưu ý an toàn">
+        <strong>Không tắt nguồn ESP32 trong lúc upload.</strong>
+        <span>Giữ điện thoại gần module và không chuyển sang ứng dụng khác.</span>
+      </section>
+
+      <details class="panel log-panel" open>
+        <summary>Nhật ký</summary>
+        <pre id="logOutput" aria-live="polite">Đang chờ thao tác…</pre>
+      </details>
+
+      <footer>
+        Hoạt động trên Chrome Android có Web Bluetooth. MD5 kiểm tra lỗi truyền,
+        không xác thực nguồn gốc firmware.
+      </footer>
+    </main>
+
+    <script src="md5.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
